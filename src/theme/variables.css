@@ -1,2 +1,57 @@
-/* For information on how to create your own theme, please refer to:
-http://ionicframework.com/docs/theming/ */
+:root {
+  /* =========================
+     🌊 BACKGROUND PRINCIPAL
+  ========================= */
+  --app-background: linear-gradient(
+    180deg,
+    #0549b0 0%,
+    #b1bdd5 100%
+  );
+
+  /* =========================
+     🎨 PALETA PRINCIPAL
+  ========================= */
+  --color-primary: #1d1d1f;   /* textos principales */
+  --color-secondary: #6e6e73; /* subtítulos */
+  --color-muted: #515154;     /* texto normal */
+
+  /* Blancos base */
+  --color-white: #ffffff;
+  --color-white-soft: rgba(255, 255, 255, 0.85);
+
+  /* Azul branding */
+  --color-blue: #0549b0;
+  --color-blue-soft: #b1bdd5;
+
+  /* =========================
+     📦 COMPONENTES
+  ========================= */
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(255, 255, 255, 0.6);
+
+  /* =========================
+     🌫️ SOMBRAS (SUAVES iOS)
+  ========================= */
+  --shadow-soft: 0 8px 32px rgba(31, 38, 135, 0.12);
+  --shadow-avatar:
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* =========================
+     📐 RADIOS
+  ========================= */
+  --radius-card: 90px;
+  --radius-circle: 50%;
+
+  /* =========================
+     ✍️ TIPOGRAFÍA
+  ========================= */
+  --font-main: -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}

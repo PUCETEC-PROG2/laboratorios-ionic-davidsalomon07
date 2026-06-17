@@ -30,7 +30,7 @@ const Tab3: React.FC = () => {
         <div className="card-container">
           <IonCard className="card">
             <img
-              src="https://avatars.githubusercontent.com/u/216223767?s=96&v=4"
+              src="https://avatars.githubusercontent.com/u/216223767?s=400&u=080bd4126623560cb471b5547a05d84d5e766f4b&v=4"
               alt="Avatar David"
             />
 
