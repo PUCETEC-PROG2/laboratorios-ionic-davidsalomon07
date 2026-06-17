@@ -36,6 +36,7 @@ const Tab2: React.FC = () => {
             className='form-field'
             expand='block'
             color="primary"
+            shape='round'
           >
             Guardar  
           </IonButton>
