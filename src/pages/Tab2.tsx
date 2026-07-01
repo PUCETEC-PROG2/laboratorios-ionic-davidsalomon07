@@ -15,7 +15,6 @@ import {
 import { RepositoryPayload } from "../interfaces/RepositoryPayload";
 import "./Tab2.css";
 import { createRepository, updateRepository } from "../services/GithubService";
-import { Repository } from "../interfaces/Repository";
 
 const Tab2: React.FC = () => {
   const history = useHistory();
