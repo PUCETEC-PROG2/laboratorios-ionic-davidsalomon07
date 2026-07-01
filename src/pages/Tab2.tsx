@@ -18,6 +18,7 @@ import { createRepository, updateRepository } from "../services/GithubService";
 
 const Tab2: React.FC = () => {
   const history = useHistory();
+
   type EditState = {
     owner?: string;
     currentName?: string;
@@ -27,7 +28,9 @@ const Tab2: React.FC = () => {
 
   const location = useLocation<EditState>();
   const editState = location.state;
-  const isEditing = editState?.owner !== undefined && editState?.currentName !== undefined;
+  const isEditing =
+    editState?.owner !== undefined && editState?.currentName !== undefined;
+
   const [repositoryData, setRepositoryData] = useState<RepositoryPayload>({
     name: "",
     description: "",
@@ -44,10 +47,10 @@ const Tab2: React.FC = () => {
 
     setLoading(true);
 
-    if (isEditing && editingRepository) {
+    if (isEditing && editState?.owner && editState?.currentName) {
       updateRepository(
-        editingRepository.owner.login,
-        editingRepository.name,
+        editState.owner,
+        editState.currentName,
         repositoryData
       )
         .then(() => {
@@ -81,10 +84,10 @@ const Tab2: React.FC = () => {
   useIonViewWillEnter(() => {
     setErrorMsg("");
 
-    if (isEditing && editingRepository) {
+    if (isEditing && editState) {
       setRepositoryData({
-        name: editingRepository.name,
-        description: editingRepository.description || "",
+        name: editState.name || "",
+        description: editState.description || "",
       });
     } else {
       setRepositoryData({
@@ -103,10 +106,13 @@ const Tab2: React.FC = () => {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Formulario de Repositorio</IonTitle>
+            <IonTitle size="large">
+              {isEditing ? "Actualizar Repositorio" : "Formulario de Repositorio"}
+            </IonTitle>
           </IonToolbar>
         </IonHeader>
 
@@ -122,6 +128,7 @@ const Tab2: React.FC = () => {
               setRepositoryData({ ...repositoryData, name: e.detail.value! })
             }
           />
+
           <IonTextarea
             className="form-field"
             label="Descripcion del repositorio"
@@ -137,11 +144,13 @@ const Tab2: React.FC = () => {
             rows={6}
             fill="outline"
           />
+
           {errorMsg !== "" && (
             <IonText color="danger">
               <p>{errorMsg}</p>
             </IonText>
           )}
+
           <IonButton
             className="form-field"
             expand="block"
