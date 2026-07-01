@@ -54,3 +54,35 @@ export const createRepository = async (repository : RepositoryPayload): Promise<
         throw new Error(`${(error as Error).message}`)
     }
 }
+
+export const updateRepository = async (
+    owner: string,
+    currentRepoName: string,
+    repository: RepositoryPayload
+): Promise<Repository> => {
+    try {
+        const response = await githubClient.patch(
+            `repos/${owner}/${currentRepoName}`,
+            repository
+        );
+
+        return response.data as Repository;
+    } catch (error) {
+        console.error("Error al actualizar repositorio", error);
+        throw new Error(`${(error as Error).message}`);
+    }
+}
+
+export const deleteRepository = async (
+    owner: string,
+    repositoryName: string
+): Promise<void> => {
+    try {
+        await githubClient.delete(
+            `repos/${owner}/${repositoryName}`
+        );
+    } catch (error) {
+        console.error("Error al eliminar repositorio", error);
+        throw new Error(`${(error as Error).message}`);
+    }
+}

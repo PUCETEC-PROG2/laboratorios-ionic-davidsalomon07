@@ -13,8 +13,12 @@ import "./RepoItem.css";
 import { pencil, trash } from "ionicons/icons";
 import { Repository } from "../interfaces/Repository.js";
 
+interface RepoItemProps extends Repository {
+  onEdit: (repository: Repository) => void;
+  onDelete: (repository: Repository) => void;
+}
 
-const RepoItem: React.FC<Repository> = (repository) => {
+const RepoItem: React.FC<RepoItemProps> = (repository) => {
   return (
     <IonItemSliding>
       <IonItem>
@@ -24,18 +28,24 @@ const RepoItem: React.FC<Repository> = (repository) => {
         <IonLabel>
           <h3>{repository.name}</h3>
           <p>{repository.description}</p>
-          { repository.language !== null && repository.language !== "" &&
-          (<p>
-            <strong>Lenguaje: </strong>
-            {repository.language}
-          </p>)}
+          {repository.language !== null && repository.language !== "" &&
+            (<p>
+              <strong>Lenguaje: </strong>
+              {repository.language}
+            </p>)}
         </IonLabel>
       </IonItem>
       <IonItemOptions>
-        <IonItemOption color={"warning"}>
+        <IonItemOption
+          color="warning"
+          onClick={() => repository.onEdit(repository)}
+        >
           <IonIcon icon={pencil} slot="icon-only" />
         </IonItemOption>
-        <IonItemOption color={"danger"}>
+        <IonItemOption
+          color="danger"
+          onClick={() => repository.onDelete(repository)}
+        >
           <IonIcon icon={trash} slot="icon-only" />
         </IonItemOption>
       </IonItemOptions>

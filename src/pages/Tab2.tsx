@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import {
   IonButton,
   IonContent,
@@ -14,10 +14,21 @@ import {
 } from "@ionic/react";
 import { RepositoryPayload } from "../interfaces/RepositoryPayload";
 import "./Tab2.css";
-import { createRepository } from "../services/GithubService";
+import { createRepository, updateRepository } from "../services/GithubService";
+import { Repository } from "../interfaces/Repository";
 
 const Tab2: React.FC = () => {
   const history = useHistory();
+  type EditState = {
+    owner?: string;
+    currentName?: string;
+    name?: string;
+    description?: string;
+  };
+
+  const location = useLocation<EditState>();
+  const editState = location.state;
+  const isEditing = editState?.owner !== undefined && editState?.currentName !== undefined;
   const [repositoryData, setRepositoryData] = useState<RepositoryPayload>({
     name: "",
     description: "",
@@ -31,7 +42,31 @@ const Tab2: React.FC = () => {
       setErrorMsg("El nombre del repositorio es obligatorio");
       return;
     }
+
     setLoading(true);
+
+    if (isEditing && editingRepository) {
+      updateRepository(
+        editingRepository.owner.login,
+        editingRepository.name,
+        repositoryData
+      )
+        .then(() => {
+          setRepositoryData({
+            name: "",
+            description: "",
+          });
+
+          history.replace("/tab2");
+        })
+        .catch((error) =>
+          setErrorMsg("Error al actualizar repositorio. " + error)
+        )
+        .finally(() => setLoading(false));
+
+      return;
+    }
+
     createRepository(repositoryData)
       .then(() => history.push("/tab1"))
       .catch((error) => setErrorMsg("Error al crear repositorio. " + error))
@@ -39,20 +74,34 @@ const Tab2: React.FC = () => {
         setLoading(false);
         setRepositoryData({
           name: "",
-          description:""
+          description: "",
         });
       });
   };
 
   useIonViewWillEnter(() => {
     setErrorMsg("");
+
+    if (isEditing && editingRepository) {
+      setRepositoryData({
+        name: editingRepository.name,
+        description: editingRepository.description || "",
+      });
+    } else {
+      setRepositoryData({
+        name: "",
+        description: "",
+      });
+    }
   });
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Formulario de Repositorio</IonTitle>
+          <IonTitle>
+            {isEditing ? "Actualizar Repositorio" : "Formulario de Repositorio"}
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -102,7 +151,13 @@ const Tab2: React.FC = () => {
             disabled={loading}
             onClick={saveRepo}
           >
-            {loading ? "Guardando..." : "Guardar"}
+            {loading
+              ? isEditing
+                ? "Actualizando..."
+                : "Guardando..."
+              : isEditing
+                ? "Actualizar"
+                : "Guardar"}
           </IonButton>
         </div>
       </IonContent>
