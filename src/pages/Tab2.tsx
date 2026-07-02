@@ -4,6 +4,7 @@ import {
   IonButton,
   IonContent,
   IonHeader,
+  IonIcon,
   IonInput,
   IonPage,
   IonText,
@@ -15,6 +16,8 @@ import {
 import { RepositoryPayload } from "../interfaces/RepositoryPayload";
 import "./Tab2.css";
 import { createRepository, updateRepository } from "../services/GithubService";
+import { logoGithub, folderOutline, documentTextOutline } from "ionicons/icons";
+
 
 const Tab2: React.FC = () => {
   const history = useHistory();
@@ -102,71 +105,88 @@ const Tab2: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>
-            {isEditing ? "Actualizar Repositorio" : "Formulario de Repositorio"}
+            {isEditing ? "Actualizar Repositorio" : "Crear Repositorio"}
           </IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent fullscreen className="repo-form-page">
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">
-              {isEditing ? "Actualizar Repositorio" : "Formulario de Repositorio"}
+              {isEditing ? "Actualizar Repositorio" : "Crear Repositorio"}
             </IonTitle>
           </IonToolbar>
         </IonHeader>
 
         <div className="form-container">
-          <IonInput
-            className="form-field"
-            label="Nombre del repositorio"
-            labelPlacement="floating"
-            placeholder="Ingrese el nombre del repositorio"
-            fill="outline"
-            value={repositoryData.name}
-            onIonChange={(e) =>
-              setRepositoryData({ ...repositoryData, name: e.detail.value! })
-            }
-          />
+          <div className="form-card">
+            <div className="form-icon">
+              <div className="form-icon-inner">
+                <IonIcon icon={logoGithub} />
+              </div>
+            </div>
 
-          <IonTextarea
-            className="form-field"
-            label="Descripcion del repositorio"
-            labelPlacement="floating"
-            placeholder="Ingrese la descripcion"
-            value={repositoryData.description}
-            onIonChange={(e) =>
-              setRepositoryData({
-                ...repositoryData,
-                description: e.detail.value!,
-              })
-            }
-            rows={6}
-            fill="outline"
-          />
+            <h2>
+              {isEditing ? "Editar repositorio" : "Crear repositorio"}
+            </h2>
 
-          {errorMsg !== "" && (
-            <IonText color="danger">
-              <p>{errorMsg}</p>
-            </IonText>
-          )}
+            <p>
+              {isEditing
+                ? "Actualiza la información de tu repositorio de GitHub."
+                : "Crea un nuevo repositorio para tu cuenta de GitHub."}
+            </p>
+            <div className="glass-input">
+              <IonIcon icon={folderOutline} className="field-icon" />
 
-          <IonButton
-            className="form-field"
-            expand="block"
-            color="dark"
-            shape="round"
-            disabled={loading}
-            onClick={saveRepo}
-          >
-            {loading
-              ? isEditing
-                ? "Actualizando..."
-                : "Guardando..."
-              : isEditing
-                ? "Actualizar"
-                : "Guardar"}
-          </IonButton>
+              <IonInput
+                placeholder="Nombre del repositorio"
+                value={repositoryData.name}
+                onIonChange={(e) =>
+                  setRepositoryData({ ...repositoryData, name: e.detail.value! })
+                }
+              />
+            </div>
+
+            <div className="glass-input glass-textarea">
+              <IonIcon icon={documentTextOutline} className="field-icon textarea-icon" />
+
+              <IonTextarea
+                placeholder="Descripción del repositorio"
+                value={repositoryData.description}
+                onIonChange={(e) =>
+                  setRepositoryData({
+                    ...repositoryData,
+                    description: e.detail.value!,
+                  })
+                }
+                rows={6}
+              />
+            </div>
+
+            {errorMsg !== "" && (
+              <IonText color="danger">
+                <p>{errorMsg}</p>
+              </IonText>
+            )}
+
+            <IonButton
+              className="glass-button"
+              expand="block"
+              color="dark"
+              shape="round"
+              disabled={loading}
+              onClick={saveRepo}
+            >
+              {loading
+                ? isEditing
+                  ? "Actualizando..."
+                  : "Guardando..."
+                : isEditing
+                  ? "Actualizar"
+                  : "Guardar"}
+            </IonButton>
+          </div>
         </div>
       </IonContent>
     </IonPage>

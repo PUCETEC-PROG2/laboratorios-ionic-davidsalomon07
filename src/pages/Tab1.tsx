@@ -44,6 +44,7 @@ const Tab1: React.FC = () => {
 
               await loadRepos();
             } catch (error) {
+              console.error("Error al eliminar: ", error);
               setErrorMsg("Error al eliminar el repositorio.");
             }
           },
