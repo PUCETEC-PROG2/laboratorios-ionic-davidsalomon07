@@ -59,7 +59,7 @@ const Tab2: React.FC = () => {
             description: "",
           });
 
-          history.replace("/tab2");
+          history.replace("/tab1");
         })
         .catch((error) =>
           setErrorMsg("Error al actualizar repositorio. " + error)
