@@ -75,7 +75,7 @@ const Tab1: React.FC = () => {
           <IonTitle>Repositorios</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen className="repo-list-page">
         <IonHeader collapse="condense">
           {/*iOS */}
           <IonToolbar>
@@ -83,7 +83,12 @@ const Tab1: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        <IonList>
+        <div className="repo-list-header">
+          <h2>GitHub Repositories</h2>
+          <p>Administra, edita y elimina tus repositorios desde Ionic.</p>
+        </div>
+
+        <IonList className="repo-list">
           {repositoryList.map((repo) => (
             <RepoItem
               key={repo.owner.login + "-" + repo.name}

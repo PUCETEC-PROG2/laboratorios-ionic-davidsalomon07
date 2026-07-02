@@ -4,10 +4,7 @@ import {
   IonItemOption,
   IonItemOptions,
   IonItemSliding,
-  IonLabel,
-  IonThumbnail,
 } from "@ionic/react";
-import "./RepoItem.tsx";
 import React from "react";
 import "./RepoItem.css";
 import { pencil, trash } from "ionicons/icons";
@@ -20,30 +17,41 @@ interface RepoItemProps extends Repository {
 
 const RepoItem: React.FC<RepoItemProps> = (repository) => {
   return (
-    <IonItemSliding>
-      <IonItem>
-        <IonThumbnail slot="start">
-          <img src={repository.owner.avatar_url} alt={repository.name} />
-        </IonThumbnail>
-        <IonLabel>
-          <h3>{repository.name}</h3>
-          <p>{repository.description}</p>
-          {repository.language !== null && repository.language !== "" &&
-            (<p>
-              <strong>Lenguaje: </strong>
-              {repository.language}
-            </p>)}
-        </IonLabel>
+    <IonItemSliding className="repo-sliding">
+      <IonItem className="repo-item" lines="none" detail={false}>
+        <div className="repo-card">
+          <img
+            className="repo-avatar"
+            src={repository.owner.avatar_url}
+            alt={repository.name}
+          />
+
+          <div className="repo-info">
+            <h3>{repository.name}</h3>
+
+            {repository.description && (
+              <p className="repo-description">{repository.description}</p>
+            )}
+
+            {repository.language !== null && repository.language !== "" && (
+              <span className="repo-language">
+                Lenguaje: {repository.language}
+              </span>
+            )}
+          </div>
+        </div>
       </IonItem>
-      <IonItemOptions>
+
+      <IonItemOptions side="end" className="glass-options">
         <IonItemOption
-          color="warning"
+          className="glass-option edit-opt"
           onClick={() => repository.onEdit(repository)}
         >
           <IonIcon icon={pencil} slot="icon-only" />
         </IonItemOption>
+
         <IonItemOption
-          color="danger"
+          className="glass-option delete-opt"
           onClick={() => repository.onDelete(repository)}
         >
           <IonIcon icon={trash} slot="icon-only" />
@@ -53,4 +61,4 @@ const RepoItem: React.FC<RepoItemProps> = (repository) => {
   );
 };
 
-export default RepoItem;
+export default RepoItem;
